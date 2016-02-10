@@ -1,9 +1,10 @@
 from Tkinter import *
 import Tkinter as tk
-import ttk
 from tkFileDialog import askdirectory
+import ttk
 import os 
 import zipfile
+import tarfile
 
 
 def center_window(width, height):
@@ -41,9 +42,18 @@ def extract_file():
 	zfile.extractall("\\")
 	e2.delete(0,END)
 	e2.insert(0,outputFileName.replace('.zip', ''))
+
+def tar_zipper():
+	outputFileName = e1.get()+".tar.gz"
+	tar = tarfile.open(outputFileName, "w:gz")
+	tar.add(e1.get(), arcname="TarName")
+	tar.close()
+	e2.delete(0,END)
+	e2.insert(0,outputFileName)
 		
 	
 if __name__ == '__main__':
+	
 	
 	root = tk.Tk()
 	center_window(800,260)
@@ -55,16 +65,14 @@ if __name__ == '__main__':
 
 	e1 = Entry(root, width =80)
 	e2 = Entry(root,width =80)
-	e1.pack()
-	e2.pack()
+	e1.pack(expand=True)
+	e2.pack(expand=True)
 	e1.grid(row=0, column=1)
 	e2.grid(row=1, column=1)
 	
 	browseButton = Button(root,width=10, height=1,text='Browse', command=open_file_dialog).grid(row=0, column=4, sticky=W, pady=4)
-	zipButton = Button(root, width=10, height=1, text='Zip', command=ziping_file).grid(row=2, column=0, sticky=W, pady=4)
-	unzipButton = Button(root, width=10, height=1, text='Extract', command=extract_file).grid(row=2, column=1, sticky=W, pady=4)
-	quitButton = Button(root, width=10, height=1, text='Quit', command=root.quit).grid(row=1, column=4, sticky=W, pady=4)
-		
-
-	
+	zipButton = Button(root, width=10, height=1, text='.zip Format', command=ziping_file).grid(row=2, column=0, sticky=W, pady=4)
+	unzipButton = Button(root, width=10, height=1, text='.zip Extract', command=extract_file).grid(row=2, column=1, sticky=W, pady=4)
+	tarzipButton = Button(root, width=10, height=1, text='.gz/tar Format', command=tar_zipper).grid(row=3, column=0, sticky=W, pady=4)
+	quitButton = Button(root, width=10, height=1, text='Quit', command=root.quit).grid(row=1, column=4, sticky=W, pady=4)	
 	root.mainloop()
